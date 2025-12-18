@@ -36,17 +36,14 @@ export default function Navbar() {
                 ))}
             </nav>
 
-            {/* CTA Buttons */}
+            {/* CTA Button */}
             <div className="hidden md:flex items-center gap-4">
-                <button className="text-white hover:text-primary text-sm font-semibold transition-colors">
-                    Log In
-                </button>
-                <Link
-                    href="#waitlist"
-                    className="flex cursor-pointer items-center justify-center rounded-full bg-white/10 hover:bg-white/20 h-10 px-5 text-white text-sm font-bold transition-all border border-white/5"
+                <button
+                    onClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
+                    className="flex cursor-pointer items-center justify-center rounded-full bg-white/10 hover:bg-white/20 h-10 px-6 text-white text-sm font-bold transition-all border border-white/5"
                 >
-                    Get Started
-                </Link>
+                    Join Waitlist
+                </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -77,16 +74,15 @@ export default function Navbar() {
                             </Link>
                         ))}
                         <div className="flex flex-col gap-2 px-6 pt-4 border-t border-white/5 mt-2">
-                            <button className="text-white hover:text-primary text-sm font-semibold py-2">
-                                Log In
-                            </button>
-                            <Link
-                                href="#waitlist"
+                            <button
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+                                }}
                                 className="flex w-full cursor-pointer items-center justify-center rounded-full bg-primary hover:bg-primary-dark h-10 text-background-dark text-sm font-bold transition-all"
-                                onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Get Started
-                            </Link>
+                                Join Waitlist
+                            </button>
                         </div>
                     </div>
                 </div>

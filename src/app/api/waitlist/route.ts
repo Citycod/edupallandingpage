@@ -24,8 +24,18 @@ export async function POST(request: NextRequest) {
         }
 
         // Insert into Supabase
-        const supabase = getSupabase();
-        const { data, error } = await supabase
+        let supabase;
+        try {
+            supabase = getSupabase();
+        } catch (envError) {
+            console.error("Supabase config error:", envError);
+            return NextResponse.json(
+                { error: "Server configuration error. Please contact support." },
+                { status: 500 }
+            );
+        }
+
+        const { error } = await supabase
             .from("waitlist")
             .insert([
                 {
@@ -34,21 +44,43 @@ export async function POST(request: NextRequest) {
                     university,
                     subscribed_to_updates: subscribed_to_updates || false,
                 },
-            ])
-            .select()
-            .single();
+            ]);
 
         if (error) {
+            console.error("Supabase error details:", {
+                message: error.message,
+                code: error.code,
+                details: error.details,
+                hint: error.hint,
+            });
+
             // Check for duplicate email
             if (error.code === "23505") {
                 return NextResponse.json(
-                    { error: "This email is already on the waitlist" },
+                    { error: "This email is already on the waitlist!" },
                     { status: 409 }
                 );
             }
-            console.error("Supabase error:", error);
+
+            // Table doesn't exist
+            if (error.code === "42P01" || error.message?.includes("relation") || error.message?.includes("does not exist")) {
+                return NextResponse.json(
+                    { error: "Database not configured. Please run the SQL setup script in Supabase." },
+                    { status: 500 }
+                );
+            }
+
+            // RLS policy issue
+            if (error.code === "42501" || error.message?.includes("policy")) {
+                return NextResponse.json(
+                    { error: "Database permission error. Please check RLS policies in Supabase." },
+                    { status: 500 }
+                );
+            }
+
+            // Return the actual error for debugging
             return NextResponse.json(
-                { error: "Failed to join waitlist. Please try again." },
+                { error: `Database error: ${error.message}` },
                 { status: 500 }
             );
         }
@@ -56,7 +88,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             {
                 message: "Successfully joined the waitlist!",
-                data
             },
             { status: 201 }
         );
