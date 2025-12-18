@@ -64,7 +64,7 @@ export default function Footer() {
             {/* Copyright */}
             <div className="border-t border-white/5 py-6 text-center text-xs text-white/40">
                 <p>© {currentYear} EduPal. All rights reserved.</p>
-                <p className="mt-1">Contact: contact@edupal.app</p>
+                <p className="mt-1">Contact: edudjewisdom7@gmail.com</p>
             </div>
         </footer>
     );
