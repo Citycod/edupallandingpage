@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: 'Lexend', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-display);
+  overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+  background: #13ec6a;
+  color: #102217;
+}
+
+/* Custom scrollbar for modern feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #102217;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #234832;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #13ec6a;
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-6 md:px-10 lg:px-20;
+  }
+}
